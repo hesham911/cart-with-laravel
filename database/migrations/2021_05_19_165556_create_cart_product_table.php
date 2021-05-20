@@ -20,6 +20,7 @@ class CreateCartProductTable extends Migration
                     $table->foreign('cart_id')->references('id')->on('carts')->cascadeOnDelete();
                 $table->unsignedBigInteger('product_id')->unsigned();
                     $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
+                $table->integer('quantity');
                 $table->timestamps();
             });
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
