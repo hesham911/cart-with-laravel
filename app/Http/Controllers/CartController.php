@@ -35,7 +35,21 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+        $cart= Cart::findOrFail($request['cart-id']);
+        $cartData = $cart->products()->sync($request['id']);
+        dd($cartData);
+        if ($cartData){
+
+            return response()->json([
+                'data' => $cartData
+            ],200);
+        }else{
+            return response()->json([
+                'error' => 'something wrong in insert'
+            ],409);
+        }
+
     }
 
     /**
