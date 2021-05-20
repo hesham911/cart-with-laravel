@@ -28,4 +28,12 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class,'brand_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class);
+    }
 }

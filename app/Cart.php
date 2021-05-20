@@ -19,4 +19,12 @@ class Cart extends Model
    {
        return $this->belongsTo(User::class,'user_id');
    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products()
+   {
+        return $this->belongsToMany(Product::class);
+   }
 }
