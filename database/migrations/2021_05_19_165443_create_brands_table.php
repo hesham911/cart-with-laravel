@@ -13,11 +13,13 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::create('brands', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->timestamps();
+            });
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
@@ -27,6 +29,8 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            Schema::dropIfExists('brands');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
