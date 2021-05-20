@@ -25,5 +25,5 @@ Route::group([
     'prefix'     => 'carts',
     'middleware' => 'auth'
 ],function (){
-    Route::post('ajax/store/{productId}','CartController@store')->name('ajax.store.item.cart');
+    Route::post('ajax/store','CartController@store')->name('ajax.store.item.cart');
 });

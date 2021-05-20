@@ -81,9 +81,9 @@
 
     googles.cart.on('add', function (idx, product, isExisting) {
         //console.log(product._data.id);
-        var url = '{{route('ajax.store.item.cart',['productId'=> ":id"])}}';
+        var url = '{{route('ajax.store.item.cart')}}';
 
-        url = url.replace(':id',product._data.id);
+       // url = url.replace(':id',product._data.id);
         $.ajax({
             type: "POST",
             url: url,
