@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -35,5 +36,35 @@ class Product extends Model
     public function carts()
     {
         return $this->belongsToMany(Cart::class)->withPivot('quantity')->withTimestamps();
+    }
+
+
+    public static function filter($search_keyword, $price, $brands, $categories) {
+        $products = DB::table('products');
+
+            //dd($products);
+        if($search_keyword && !empty($search_keyword)) {
+
+            $products->where(function($q) use ($search_keyword) {
+                $q->where('products.name', 'like', "%{$search_keyword}%");
+            });
+        }
+
+        // Filter By brands
+        if($brands && $brands!= null) {
+
+            $products = $products->whereIn('products.brand_id', $brands);
+        }
+        // Filter By categories
+        if($categories && $categories!= null) {
+            $products = $products->whereIn('products.category_id', $categories);
+        }
+
+        // Filter By prices
+        if ($price && $price != null ) {
+            $products = $products->whereBetween('products.price', $price);
+        }
+
+        return $products->paginate(12);
     }
 }

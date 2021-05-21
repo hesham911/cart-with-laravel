@@ -26,10 +26,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::filter('',null,null,null);
+        //dd($products);
         $brands   = Brand::all();
-        $categories   = Category::where('parent_category_id',null)->get();
+        $categories   = Category::whereNotNull('parent_category_id')->get();
         return view('frontend.home',['products' => $products,'brands'=>$brands,'categories'=>$categories]);
+    }
+
+    public function filterData(Request $request)
+    {
+
+        $query = $request->search_query;
+        $brands = $request->brands;
+        $categories = $request->categories;
+        $price = $request->price;
+        if ($request->ajax ()) {
+            $products = Product::filter ( $query, $price, $brands, $categories );
+            return view ( 'frontend.partials.content-data', compact ( 'products' ) )->render();
+        }
     }
 
 }
