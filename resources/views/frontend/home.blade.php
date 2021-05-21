@@ -80,13 +80,42 @@
 <script>
 
     googles.cart.on('add', function (idx, product, isExisting) {
-        //console.log(product._data.id);
-        var url = '{{route('carts.storecart',['productId'=> ":id"])}}';
+        var urlAdd = '{{route('ajax.store.item.cart')}}';
+        var urUpdate = '{{route('ajax.update.item.cart')}}';
 
-        url = url.replace(':id',product._data.id);
+       // url = url.replace(':id',product._data.id);
         $.ajax({
             type: "POST",
-            url: url,
+            url: urlAdd,
+            data: product._data,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+              data =  googles.cart.items()
+
+            }
+        });
+        product.on('change', function (key) {
+            $.ajax({
+                type: "POST",
+                url: urUpdate,
+                data: product._data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        })
+    });
+    googles.cart.on('remove', function (evt,product) {
+
+        var urlRemove = '{{route('ajax.delete.item.cart')}}';
+        $.ajax({
+            type: "POST",
+            url: urlRemove,
             data: product._data,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -95,15 +124,6 @@
                 console.log(data);
             }
         });
-        if (isExisting){
-            console.log(10);
-            product.on('change', function (key) {
-
-            })
-        }
-    });
-    googles.cart.on('remove', function (evt) {
-        console.log(12);
     });
 </script>
 @endpush

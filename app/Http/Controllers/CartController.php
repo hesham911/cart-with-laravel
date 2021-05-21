@@ -3,29 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
+use App\Product;
 use Illuminate\Http\Request;
+use Psy\Exception\ErrorException;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,30 +18,24 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cart= Cart::findOrFail($request['cart-id']);
+        $pro = $cart->products()->where('product_id',$request['id'])->first();
+        $arr = array(
+            $request['id'] =>   [
+              'quantity' => $request['quantity']
+            ]
+        );
+        if ($pro){
+           $pro->pivot->quantity = $request['quantity'];
+           $pro->pivot->save();
+        }else{
+            $cart->products()->attach($arr);
+        }
+        return response()->json([
+            'data' => $cart->products()->get()
+        ],200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +44,22 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cart $cart)
+    public function update(Request $request)
     {
-        //
+        $cart= Cart::findOrFail($request['cart-id']);
+        $pro = $cart->products()->where('product_id',$request['id'])->first();
+        if ($pro){
+            $pro->pivot->quantity = $request['quantity'];
+            $pro->pivot->save();
+
+            return response()->json([
+                'data' => $cart->products()->get()
+            ],200);
+        }else{
+            return response()->json([
+                'error' => 'something wrong'
+            ],500);
+        }
     }
 
     /**
@@ -78,8 +68,13 @@ class CartController extends Controller
      * @param  \App\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cart $cart)
+    public function destroy(Request $request)
     {
-        //
+        $cart= Cart::findOrFail($request['cart-id']);
+        $pro = $cart->products()->where('product_id',$request['id'])->first();
+        $cart->products()->detach($pro);
+        return response()->json([
+            'data' => $cart->products()->get()
+        ],200);
     }
 }

@@ -20,3 +20,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group([
+    'prefix'     => 'carts',
+    'middleware' => 'auth'
+],function (){
+    Route::post('ajax/store','CartController@store')->name('ajax.store.item.cart');
+    Route::post('ajax/update','CartController@update')->name('ajax.update.item.cart');
+    Route::post('ajax/delete','CartController@destroy')->name('ajax.delete.item.cart');
+});
