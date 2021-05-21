@@ -5,7 +5,7 @@
             <div class="product-googles-info googles">
                 <div class="men-pro-item">
                     <div class="men-thumb-item">
-                        <img src="{{asset('assets/images/s1.jpg')}}" class="img-fluid" alt="">
+                        <img src="{{asset($product->getFirstMediaUrl('images'))}}" class="img-fluid" alt="">
                         <div class="men-cart-pro">
                             <div class="inner-men-cart-pro">
                                 <a href="single.html" class="link-product-add-cart">Quick View</a>
@@ -52,12 +52,12 @@
             </div>
         </div>
     @endforeach
-    <div>
-        {{$products->links()}}
-    </div>
+
 @else
     <div class="alert alert-info mr-auto ml-auto">
         <p class="font-weight-bolder">No Products Matching</p>
     </div>
 @endif
-
+<div>
+    {{$products->links()}}
+</div>

@@ -18,8 +18,8 @@
 
                 <div id="slider-range"></div>
                 <div class="m-3 text-center">
-                    <input title="price" class="col-md-4" type="text" name="start_price" id="amount_start" />
-                    <input title="price" class="col-md-4" type="text" name="end_price" id="amount_end" />
+                    <input title="price" class="col-md-4" type="text" name="start_price" id="amount_start" disabled />
+                    <input title="price" class="col-md-4" type="text" name="end_price" id="amount_end" disabled/>
                 </div>
 
             </li>

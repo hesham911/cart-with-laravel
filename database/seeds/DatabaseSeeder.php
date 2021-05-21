@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Faker\Factory as Faker;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -12,5 +12,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+         $this->call(BrandsTableSeeder::class);
+         $this->call(CategoriesTableSeeder::class);
+         $this->call(ProductsTableSeeder::class);
+
+
     }
 }
