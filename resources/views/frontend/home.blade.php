@@ -15,61 +15,10 @@
                 </div>
 
             </div>
-            <div class="row">
-                <!-- /womens -->
-                @foreach($products as $k => $product)
-                <div class="col-md-3 product-men women_two shop-gd">
-                    <div class="product-googles-info googles">
-                        <div class="men-pro-item">
-                            <div class="men-thumb-item">
-                                <img src="{{asset('assets/images/s1.jpg')}}" class="img-fluid" alt="">
-                                <div class="men-cart-pro">
-                                    <div class="inner-men-cart-pro">
-                                        <a href="single.html" class="link-product-add-cart">Quick View</a>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="item-info-product">
-                                <div class="info-product-price">
-                                    <div class="grid_meta">
-                                        <div class="product_price">
-                                            <h4>
-                                                <a href="single.html">{{$product->name}}</a>
-                                            </h4>
-                                            <div class="grid-price mt-2">
-                                                <span class="money ">{{$product->price}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="googles single-item hvr-outline-out">
-                                        {{--<a href="{{route('carts.storecart',['productId'=>$product->id])}}"--}}
-                                           {{--data-cart="{{$product->id}}" class="product-add-to-compare"--}}
-                                           {{--data-toggle="tooltip" data-placement="top" title="اضف للمشتريات">--}}
-                                            {{--<i class="fa fa-shopping-cart"></i>--}}
-                                        {{--</a>--}}
-
-                                        <form action="#" method="post">
-                                            <input type="hidden" name="cmd" value="_cart">
-                                            <input type="hidden" name="add" value="1">
-                                            <input type="hidden" name="googles_item" value="{{$product->name}}">
-                                            <input type="hidden" name="amount" value="{{$product->price}}">
-                                            <input type="hidden" name="id" value="{{$product->id}}">
-                                            <input type="hidden" name="cart-id" value="{{auth()->id()}}">
-                                            <button type="submit" class="googles-cart pgoogles-cart">
-                                                <i class="fas fa-cart-plus"></i>
-                                            </button>
-                                        </form>
-
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
+            <div class="row" id="product-data">
+                @include('frontend.partials.content-data')
             </div>
+
 
         </div>
     </div>
@@ -78,12 +27,11 @@
 
 @push('custom-js')
 <script>
-
     googles.cart.on('add', function (idx, product, isExisting) {
         var urlAdd = '{{route('ajax.store.item.cart')}}';
         var urUpdate = '{{route('ajax.update.item.cart')}}';
 
-       // url = url.replace(':id',product._data.id);
+        // url = url.replace(':id',product._data.id);
         $.ajax({
             type: "POST",
             url: urlAdd,
@@ -92,7 +40,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(data) {
-              data =  googles.cart.items()
+                data =  googles.cart.items()
 
             }
         });
@@ -105,7 +53,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(data) {
-                    console.log(data);
+                   // console.log(data);
                 }
             });
         })
@@ -121,9 +69,86 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(data) {
-                console.log(data);
+                //console.log(data);
             }
         });
     });
+</script>
+<script>
+
+    $(document).ready(function() {
+                $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            getMoreUsers(page);
+        });
+    });
+    $(document).ready(function() {
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            var page = $(this).attr('href').split('page=')[1];
+            getMoreUsers(page);
+        });
+
+        $('#search').on('keyup', function() {
+            $value = $(this).val();
+            getMoreUsers(1);
+        });
+
+        $('.categories').on('change', function(e) {
+            getMoreUsers();
+        });
+
+        $('.brands').on('change', function (e) {
+            getMoreUsers();
+        });
+
+
+        $("#slider-range").on('slidechange', function (event, ui) {
+            getMoreUsers();
+
+        })
+
+    });
+
+    function getMoreUsers(page) {
+
+
+        var search = $('#search').val();
+
+        var categories = [];
+       //console.log($(".categories").filter(':checked'));
+        $(".categories").each(function () {
+            if ($(this).is(":checked")){
+                categories.push($(this).val())
+            }
+        });
+
+        // Search with brands
+        var brands = [];
+        $(".brands").each(function () {
+            if ($(this).is(":checked")){
+                brands.push($(this).val())
+            }
+        });
+        // Search with price
+        var price  = $("#slider-range").slider('values');
+
+        //console.log(price);
+
+        $.ajax({
+            type: "GET",
+            data: {
+                'search_query':search,
+                'categories': categories,
+                'brands': brands,
+                'price': price
+            },
+            url: "{{ route('product.filter') }}" + "?page=" + page,
+            success:function(data) {
+                $('#product-data').html(data);
+            }
+        });
+    }
 </script>
 @endpush

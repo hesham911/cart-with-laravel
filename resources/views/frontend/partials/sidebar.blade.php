@@ -3,7 +3,7 @@
     <div class="search-hotel">
         <h3 class="agileits-sear-head">Search Here..</h3>
         <form action="#" method="post">
-            <input class="form-control" type="search" name="search" placeholder="Search here..." required="">
+            <input class="form-control" id="search" type="search" name="search" placeholder="Search here..." required="">
             <button class="btn1">
                 <i class="fas fa-search"></i>
             </button>
@@ -17,7 +17,11 @@
             <li>
 
                 <div id="slider-range"></div>
-                <input title="price" type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;" />
+                <div class="m-3 text-center">
+                    <input title="price" class="col-md-4" type="text" name="start_price" id="amount_start" />
+                    <input title="price" class="col-md-4" type="text" name="end_price" id="amount_end" />
+                </div>
+
             </li>
         </ul>
     </div>
@@ -28,7 +32,7 @@
         <ul>
             @foreach($brands as $brand)
             <li>
-                <input title="brand" type="checkbox" class="checked">
+                <input title="brand" name="brands" id="brands" value="{{$brand->id}}" type="checkbox" class="checked brands">
                 <span class="span" data-brand-id="{{$brand->id}}">{{$brand->name}}</span>
             </li>
             @endforeach
@@ -41,7 +45,7 @@
         <ul>
             @foreach($categories as $category)
             <li>
-                <input title="categories" type="checkbox" class="checked">
+                <input title="categories" name="categories"  id="categories" value="{{$category->id}}" type="checkbox" class="checked categories">
                 <span class="span">{{$category->name}}</span>
             </li>
             @endforeach
