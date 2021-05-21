@@ -99,7 +99,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- price range (top products) -->
 <script src="{{asset('assets/js/jquery-ui.js')}}"></script>
 <script>
-    //<![CDATA[
     $(window).load(function () {
         $("#slider-range").slider({
             range: true,
@@ -107,12 +106,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             max: 9000,
             values: [50, 6000],
             slide: function (event, ui) {
-                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                $("#amount_start").val(ui.values[0]);
+                $("#amount_end").val(ui.values[1]);
             }
         });
-        $("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
-
-    }); //]]>
+    });
 </script>
 <!-- //price range (top products) -->
 
