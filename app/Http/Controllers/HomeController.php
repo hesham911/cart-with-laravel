@@ -27,8 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         $products = Product::filter('',null,null,null);
-        //dd($products);
-        $brands   = Brand::all();
+        $brands       = Brand::all();
         $categories   = Category::whereNotNull('parent_category_id')->get();
         return view('frontend.home',['products' => $products,'brands'=>$brands,'categories'=>$categories]);
     }
