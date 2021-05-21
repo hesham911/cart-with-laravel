@@ -80,38 +80,38 @@
                 $(document).on('click', '.pagination a', function(event) {
             event.preventDefault();
             var page = $(this).attr('href').split('page=')[1];
-            getMoreUsers(page);
+                    filter(page);
         });
     });
     $(document).ready(function() {
         $(document).on('click', '.pagination a', function(event) {
             event.preventDefault();
             var page = $(this).attr('href').split('page=')[1];
-            getMoreUsers(page);
+            filter(page);
         });
 
         $('#search').on('keyup', function() {
             $value = $(this).val();
-            getMoreUsers(1);
+            filter(1);
         });
 
-        $('.categories').on('change', function(e) {
-            getMoreUsers();
+        $('.categories').on('click', function(e) {
+            filter();
         });
 
-        $('.brands').on('change', function (e) {
-            getMoreUsers();
+        $('.brands').on('click', function (e) {
+            filter();
         });
 
 
         $("#slider-range").on('slidechange', function (event, ui) {
-            getMoreUsers();
+            filter();
 
         })
 
     });
 
-    function getMoreUsers(page) {
+    function filter(page) {
 
 
         var search = $('#search').val();
