@@ -3,10 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
-class Product extends Model
+
+use Illuminate\Support\Facades\DB;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+class Product extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     /**
      * @var array
      */
@@ -38,13 +45,32 @@ class Product extends Model
         return $this->belongsToMany(Cart::class)->withPivot('quantity')->withTimestamps();
     }
 
+    /**
+     * @param Media|null $media
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(512)//Define thumbnail size in pixels
+            ->height(512);
 
+        $this->addMediaConversion('large')
+            ->width(1536)//Define large image size in pixels
+            ->height(1536);
+    }
+
+    /**
+     * @param $search_keyword
+     * @param $price
+     * @param $brands
+     * @param $categories
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public static function filter($search_keyword, $price, $brands, $categories) {
-        $products = DB::table('products');
+        $products = Product::query();
 
             //dd($products);
         if($search_keyword && !empty($search_keyword)) {
-
             $products->where(function($q) use ($search_keyword) {
                 $q->where('products.name', 'like', "%{$search_keyword}%");
             });
@@ -65,6 +91,7 @@ class Product extends Model
             $products = $products->whereBetween('products.price', $price);
         }
 
-        return $products->paginate(12);
+         return $products->paginate(4);
+
     }
 }
