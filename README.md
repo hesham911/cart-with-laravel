@@ -1,5 +1,26 @@
-simple cart for ecommerce website using ajax with filter 
+# Cart With Laravel
 
-## License
+A simple cart system built using Laravel. This project demonstrates how to manage a shopping cart, add/remove items, calculate total, and handle session-based carts.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🛠️ Tech Stack
+- Laravel 8
+- PHP 7+
+- Bootstrap (أو أي واجهة مستخدم استخدمتها)
+- MySQL
+
+## 🚀 Features
+- Add/remove items to/from cart
+- Quantity control
+- Cart total calculation
+- Basic UI for demonstration
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/hesham911/cart-with-laravel.git
+cd cart-with-laravel
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
